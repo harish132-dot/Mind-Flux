@@ -1,0 +1,8 @@
+{
+  "name": "AI Insight Engine",
+  "description": "Think. Analyze. Predict. Act. Real AI-powered decision support, student analytics, ML prediction, and personalized action planning.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

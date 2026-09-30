@@ -1,0 +1,171 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile document",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 256 },
+        "displayName": { "type": "string", "maxLength": 128 },
+        "photoURL": { "type": "string", "maxLength": 1024 },
+        "createdAt": { "type": "string" },
+        "lastLoginAt": { "type": "string" }
+      },
+      "required": ["uid", "email"]
+    },
+    "Conversation": {
+      "title": "Conversation",
+      "description": "Chat session thread",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 200 },
+        "lastMessage": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["userId", "title"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "Individual chat message",
+      "type": "object",
+      "properties": {
+        "conversationId": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "role": { "type": "string", "enum": ["user", "assistant", "system"] },
+        "content": { "type": "string", "maxLength": 50000 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["conversationId", "userId", "role", "content"]
+    },
+    "Analysis": {
+      "title": "Analysis",
+      "description": "Student or data analysis result",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "studentName": { "type": "string", "maxLength": 128 },
+        "department": { "type": "string", "maxLength": 128 },
+        "semester": { "type": "number" },
+        "attendancePercentage": { "type": "number" },
+        "overallScore": { "type": "number" },
+        "academicRisk": { "type": "string", "maxLength": 64 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["userId", "studentName"]
+    },
+    "Prediction": {
+      "title": "Prediction",
+      "description": "Machine learning inference outcome",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "studentName": { "type": "string", "maxLength": 128 },
+        "predictedClass": { "type": "string", "maxLength": 64 },
+        "confidence": { "type": "number" },
+        "modelVersion": { "type": "string", "maxLength": 64 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["userId", "predictedClass", "modelVersion"]
+    },
+    "ActionPlan": {
+      "title": "ActionPlan",
+      "description": "Personalized action plan generated for improvement",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 256 },
+        "targetGoal": { "type": "string", "maxLength": 500 },
+        "totalTasks": { "type": "number" },
+        "completedTasks": { "type": "number" },
+        "progress": { "type": "number" },
+        "status": { "type": "string", "enum": ["active", "completed", "archived"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["userId", "title"]
+    },
+    "Task": {
+      "title": "Task",
+      "description": "Individual task inside an action plan",
+      "type": "object",
+      "properties": {
+        "planId": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 256 },
+        "description": { "type": "string", "maxLength": 1000 },
+        "priority": { "type": "string", "enum": ["low", "medium", "high", "critical"] },
+        "duration": { "type": "string", "maxLength": 64 },
+        "dueDate": { "type": "string", "maxLength": 64 },
+        "status": { "type": "string", "enum": ["todo", "in_progress", "completed"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["planId", "userId", "title", "status"]
+    },
+    "UploadedFile": {
+      "title": "UploadedFile",
+      "description": "Uploaded dataset or document metadata",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "fileName": { "type": "string", "maxLength": 256 },
+        "fileSize": { "type": "number" },
+        "fileType": { "type": "string", "maxLength": 64 },
+        "rowCount": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["userId", "fileName"]
+    },
+    "Report": {
+      "title": "Report",
+      "description": "Exported insight report summary",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 256 },
+        "reportType": { "type": "string", "maxLength": 64 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["userId", "title"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "entities/User" },
+      "description": "Private user profiles"
+    },
+    "/conversations/{conversationId}": {
+      "schema": { "$ref": "entities/Conversation" },
+      "description": "User conversational threads"
+    },
+    "/messages/{messageId}": {
+      "schema": { "$ref": "entities/Message" },
+      "description": "Chat messages"
+    },
+    "/analyses/{analysisId}": {
+      "schema": { "$ref": "entities/Analysis" },
+      "description": "Student performance analyses"
+    },
+    "/predictions/{predictionId}": {
+      "schema": { "$ref": "entities/Prediction" },
+      "description": "ML inference prediction records"
+    },
+    "/actionPlans/{planId}": {
+      "schema": { "$ref": "entities/ActionPlan" },
+      "description": "User action plans"
+    },
+    "/tasks/{taskId}": {
+      "schema": { "$ref": "entities/Task" },
+      "description": "Action plan tasks"
+    },
+    "/uploadedFiles/{fileId}": {
+      "schema": { "$ref": "entities/UploadedFile" },
+      "description": "User uploaded datasets"
+    },
+    "/reports/{reportId}": {
+      "schema": { "$ref": "entities/Report" },
+      "description": "Generated reports"
+    }
+  }
+}
